@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title><%= title %> | PROJECT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
+        }
+
+        body {
+            background-image: url("https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80");
+            /* background-color: #0A0101EA;
+        color: #FFFFFFEA; */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container text-center">
+        <h1><%= title %></h1>
+    </div>
+
+    <div class="container justify-content-center">
+        <button type="button" class="btn btn-outline-light mb-2" data-bs-toggle="modal"
+            data-bs-target="#exampleModal"><i class="fa-solid fa-user-plus"></i> Tambah data </button>
+        <div class="row">
+            <div class="col-md-12 px-3">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nama Customer</th>
+                            <th scope="col">Style</th>
+                            <th scope="col">Jumlah</th>
+                            <th scope="col">Finish</th>
+                            <th scope="col">Keterangan</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <% var i=1; %>
+                        <tr>
+                            <% for (let user of users){ %>
+                            <th scope="row"><%= i %></th>
+                            <td><%= user.customer %></td>
+                            <td><%= user.style %></td>
+                            <td><%= user.qty %></td>
+                            <td><%= user.finish_at %></td>
+                            <td><%= user.keterangan %></td>
+                            <td>
+                                <a href="/edit/<%= user.id %>" class="btn btn-sm text-info" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i class="fa-solid fa-user-pen"></i></a>
+                                <a href="/hapus/<%= user.id %>" class="btn btn-sm text-danger delete" onclick="return alert('Are You sure?')"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                            <%  i++; %>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+<!-- modal edit -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Add / Edit Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- <% for (user of users) %> -->
+                <form action="/edit/<%= user.id %>" method="POST">
+
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-user-plus"></i> &nbsp; Nama Customer</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" id="customer" aria-describedby="inputGroup-sizing-sm" name="customer" value="<%= user.customer %>">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-vest"></i> &nbsp; Style</span>
+                        <input type="text" class="form-control" id="style" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm" name="style" value="<%= user.style %>">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-table-list"></i> &nbsp; Jumlah</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm" name="qty" value="<%= user.qty %>">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-calendar-days"></i> &nbsp; Finish</span>
+                        <input type="date" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm" name="finish_at" value="<%= user.finish_at %>">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-display"></i> &nbsp; Description</span>
+                        <textarea name="keterangan" id="" cols="40" rows="3"><%= user.keterangan %></textarea>
+                    </div>
+                    <%  %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i> &nbsp; Close</button>
+                <button type="submit" id="update" class="btn btn-outline-info"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Update</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add / Edit Data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/tambah" method="post">
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-user-plus"></i> &nbsp; Nama Customer</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" id="customer" aria-describedby="inputGroup-sizing-sm" name="customer">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-vest"></i> &nbsp; Style</span>
+                                <input type="text" class="form-control" id="style" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" name="style">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-table-list"></i> &nbsp; Jumlah</span>
+                                <input type="number" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" name="qty">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-calendar-days"></i> &nbsp; Finish</span>
+                                <input type="date" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" name="finish_at">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa-solid fa-display"></i> &nbsp; Description</span>
+                                <textarea name="keterangan" id="" cols="40" rows="3"></textarea>
+                            </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i> &nbsp; Close</button>
+                        <button type="submit" id="simpan" class="btn btn-outline-info"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Simpan</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+<!-- <script>
+    $(document).ready(function () {
+        Swal.fire({
+            title: 'Hello saya disini!',
+            text: 'This is a sweet alert',
+            icon: 'success'
+        })
+    });
+</script> -->
+
+
+
+        <!-- body background image -->
+        <!-- <body style="background-image: url('../images/001.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center; background-attachment: fixed;"> -->
+
+
+
+        <!-- Optional JavaScript; choose one of the two! -->
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+        </script>
+
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
+

@@ -1,0 +1,17 @@
+### add user
+POST http://localhost:8000/users HTTP/1.1
+content-type: application/json
+
+{
+    "name": "test2",
+    "email": "test2@gmail.com",
+    "password": "test"
+}
+
+### get user
+
+GET http://localhost:8000/users HTTP/1.1
+
+
+### get timeline
+GET http://localhost:8000/ HTTP/1.1
